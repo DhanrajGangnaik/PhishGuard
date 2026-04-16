@@ -1,0 +1,7 @@
+url,label
+http://paypal-login-security-check.example.com,phishing
+https://accounts.google.com,legitimate
+http://192.168.0.50/verify/account,phishing
+https://www.amazon.in,legitimate
+http://bit.ly/update-bank-account,phishing
+https://github.com,legitimate

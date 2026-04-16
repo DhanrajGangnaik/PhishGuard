@@ -1,0 +1,5 @@
+text,label
+"Dear user, your account will be suspended immediately unless you verify your password now at http://fake-login.example.com",phishing
+"Hi team, please find the updated project notes attached for tomorrow's review meeting.",legitimate
+"Security alert! Reset your bank password immediately and confirm your OTP.",phishing
+"Your interview is scheduled for Friday at 10 AM. Please confirm availability.",legitimate

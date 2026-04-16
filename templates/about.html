@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero dashboard-hero">
+    <div>
+        <p class="eyebrow">Project Overview</p>
+        <h1>About PhishGuard</h1>
+        <p class="hero-text">A laptop-runnable phishing detection project designed for academic demonstration, container deployment, and explainable cybersecurity analysis.</p>
+    </div>
+</section>
+
+<section class="grid-2 align-start">
+    <div class="panel glass-panel">
+        <p class="eyebrow">What It Does</p>
+        <h2>Key Features</h2>
+        <ul class="list refined-list">
+            <li>Analyzes suspicious URLs and email content locally.</li>
+            <li>Produces Safe, Suspicious, or Phishing classifications.</li>
+            <li>Explains the decision using triggered reasons and extracted features.</li>
+            <li>Stores scan history in SQLite for later review.</li>
+            <li>Displays dashboard charts for demo-ready presentation.</li>
+        </ul>
+    </div>
+
+    <div class="panel glass-panel">
+        <p class="eyebrow">Stack</p>
+        <h2>Technology Used</h2>
+        <ul class="list refined-list">
+            <li>Backend: Flask + Python</li>
+            <li>Frontend: HTML, CSS, JavaScript</li>
+            <li>Charts: Chart.js</li>
+            <li>Database: SQLite</li>
+            <li>Deployment: Docker container with Gunicorn</li>
+        </ul>
+    </div>
+</section>
+{% endblock %}

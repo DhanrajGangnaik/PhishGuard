@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero dashboard-hero">
+    <div>
+        <p class="eyebrow">Operational View</p>
+        <h1>Detection dashboard and recent scan activity.</h1>
+        <p class="hero-text">Use this screen during evaluation to show volume, category distribution, and evidence of previous phishing scans.</p>
+    </div>
+</section>
+
+<section class="cards premium-cards">
+    <div class="stat-card premium-stat">
+        <span>Total Scans</span>
+        <p>{{ counts.Total }}</p>
+    </div>
+    <div class="stat-card premium-stat safe-border">
+        <span>Safe</span>
+        <p>{{ counts.Safe }}</p>
+    </div>
+    <div class="stat-card premium-stat warn-border">
+        <span>Suspicious</span>
+        <p>{{ counts.Suspicious }}</p>
+    </div>
+    <div class="stat-card premium-stat danger-border">
+        <span>Phishing</span>
+        <p>{{ counts.Phishing }}</p>
+    </div>
+</section>
+
+<section class="grid-2 align-start">
+    <div class="panel glass-panel chart-panel">
+        <div class="panel-head">
+            <div>
+                <p class="eyebrow">Distribution</p>
+                <h2>Scan Outcome Summary</h2>
+            </div>
+        </div>
+        <canvas id="resultChart"></canvas>
+    </div>
+
+    <div class="panel glass-panel">
+        <div class="panel-head">
+            <div>
+                <p class="eyebrow">Latest Records</p>
+                <h2>Recent Scans</h2>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Label</th>
+                        <th>Score</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for scan in recent_scans %}
+                    <tr>
+                        <td>{{ scan.input_type|upper }}</td>
+                        <td><span class="table-label table-{{ scan.label|lower }}">{{ scan.label }}</span></td>
+                        <td>{{ scan.score }}</td>
+                        <td>{{ scan.created_at }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="muted">No scans yet. Analyze an input first.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const ctx = document.getElementById('resultChart');
+new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: {{ chart_data['labels'] | tojson }},
+        datasets: [{
+            label: 'Number of Scans',
+            data: {{ chart_data['values'] | tojson }},
+            backgroundColor: ['#34d399', '#fbbf24', '#fb7185'],
+            borderColor: '#121122',
+            borderWidth: 4,
+            hoverOffset: 10
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                labels: {
+                    color: '#d6d1f2'
+                }
+            }
+        }
+    }
+});
+</script>
+{% endblock %}

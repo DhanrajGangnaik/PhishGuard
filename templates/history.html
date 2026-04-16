@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero dashboard-hero">
+    <div>
+        <p class="eyebrow">Stored Evidence</p>
+        <h1>Full scan history.</h1>
+        <p class="hero-text">This table helps demonstrate persistent local storage and explainable output retention for each URL or email that was analyzed.</p>
+    </div>
+</section>
+
+<section class="panel glass-panel">
+    <div class="panel-head">
+        <div>
+            <p class="eyebrow">Database Records</p>
+            <h2>Scan History</h2>
+        </div>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Content</th>
+                    <th>Label</th>
+                    <th>Score</th>
+                    <th>Reasons</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for scan in recent_scans %}
+                <tr>
+                    <td>{{ scan.id }}</td>
+                    <td>{{ scan.input_type|upper }}</td>
+                    <td class="content-cell">{{ scan.content }}</td>
+                    <td><span class="table-label table-{{ scan.label|lower }}">{{ scan.label }}</span></td>
+                    <td>{{ scan.score }}</td>
+                    <td>
+                        <ul class="list refined-list compact-list">
+                            {% for reason in scan.reasons %}
+                                <li>{{ reason }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>{{ scan.created_at }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" class="muted">No scan history available yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

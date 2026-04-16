@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block content %}
+{% set cls = 'result-safe' if result.label == 'Safe' else ('result-suspicious' if result.label == 'Suspicious' else 'result-phishing') %}
+{% set bar_cls = 'bar-safe' if result.label == 'Safe' else ('bar-suspicious' if result.label == 'Suspicious' else 'bar-phishing') %}
+
+<section class="hero result-hero">
+    <div>
+        <p class="eyebrow">Detection Summary</p>
+        <h1>Analysis completed.</h1>
+        <p class="hero-text">PhishGuard classified the submitted {{ result.input_type }} and generated a transparent risk score with trigger evidence.</p>
+    </div>
+    <div class="result-side-pill {{ cls }}">{{ result.label }}</div>
+</section>
+
+<section class="grid-2 align-start">
+    <div class="panel glass-panel">
+        <div class="panel-head">
+            <div>
+                <p class="eyebrow">Primary Result</p>
+                <h2>Score Overview</h2>
+            </div>
+            <span class="score-chip">{{ result.score }}/100</span>
+        </div>
+
+        <div class="progress-wrap premium-progress">
+            <div class="progress-bar {{ bar_cls }}" style="width: {{ result.score }}%;"></div>
+        </div>
+
+        <div class="result-meta-grid">
+            <div class="mini-metric">
+                <span>Input Type</span>
+                <strong>{{ result.input_type|upper }}</strong>
+            </div>
+            <div class="mini-metric">
+                <span>Classification</span>
+                <strong>{{ result.label }}</strong>
+            </div>
+        </div>
+
+        <div class="content-view">
+            <p class="content-label">Analyzed Content</p>
+            <div class="content-box">{{ result.content }}</div>
+        </div>
+
+        <div class="inline-actions top-gap">
+            <a class="button button-primary" href="{{ url_for('index') }}">Analyze Another</a>
+            <a class="button button-secondary" href="{{ url_for('dashboard') }}">Open Dashboard</a>
+        </div>
+    </div>
+
+    <div class="stack-col">
+        <div class="panel glass-panel">
+            <p class="eyebrow">Explainability Layer</p>
+            <h2>Triggered Reasons</h2>
+            <ul class="list refined-list">
+                {% for reason in result.reasons %}
+                    <li>{{ reason }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="panel glass-panel">
+            <p class="eyebrow">Feature View</p>
+            <h2>Extracted Signals</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Feature</th><th>Value</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for key, value in result.features.items() %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ value }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

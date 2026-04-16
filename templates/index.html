@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero premium-hero">
+    <div class="hero-copy">
+        <p class="eyebrow">AI-Assisted Security Screening</p>
+        <h1>Elegant phishing analysis with an explainable local detection engine.</h1>
+        <p class="hero-text">
+            Analyze URLs and email content on your laptop, generate transparent risk scores, and present a polished working model with scan history and a live dashboard.
+        </p>
+        <div class="hero-actions">
+            <a class="button button-primary" href="#analyzer">Start Analyzing</a>
+            <a class="button button-secondary" href="{{ url_for('dashboard') }}">View Dashboard</a>
+        </div>
+    </div>
+    <div class="hero-art">
+        <div class="orb-shell">
+            <div class="orb-ring orb-ring-one"></div>
+            <div class="orb-ring orb-ring-two"></div>
+            <div class="orb-core"></div>
+        </div>
+    </div>
+</section>
+
+<section class="logo-strip panel-soft">
+    <div>URL Intelligence</div>
+    <div>Email Analysis</div>
+    <div>Explainable Scoring</div>
+    <div>Scan History</div>
+    <div>Container Ready</div>
+</section>
+
+<section class="feature-intro section-copy">
+    <p class="eyebrow">Core Workflow</p>
+    <h2>Analyze, explain, and demonstrate.</h2>
+    <p class="muted wide-copy">The interface is styled for a final-year project demo, but the workflow remains simple: provide an input, inspect the score, review triggered indicators, and show stored scan evidence.</p>
+</section>
+
+<section class="feature-grid">
+    <div class="mini-feature-card">
+        <div class="feature-icon">1</div>
+        <h3>Input Suspicious Data</h3>
+        <p>Paste a URL or email body that looks unsafe or socially engineered.</p>
+    </div>
+    <div class="mini-feature-card">
+        <div class="feature-icon">2</div>
+        <h3>Generate Detection</h3>
+        <p>Use the built-in rule engine to classify inputs as Safe, Suspicious, or Phishing.</p>
+    </div>
+    <div class="mini-feature-card">
+        <div class="feature-icon">3</div>
+        <h3>Present Evidence</h3>
+        <p>Show reasons, extracted features, and historic scan data through the dashboard.</p>
+    </div>
+</section>
+
+<section class="grid-2 align-start" id="analyzer">
+    <div class="panel glass-panel analyzer-panel">
+        <div class="panel-head">
+            <div>
+                <p class="eyebrow">Live Demo Console</p>
+                <h2>Analyze Input</h2>
+            </div>
+            <span class="status-pill">Ready</span>
+        </div>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST">
+            <label for="input_type">Input Type</label>
+            <select id="input_type" name="input_type" onchange="autoFillSample(this.value)">
+                <option value="url">URL</option>
+                <option value="email">Email Content</option>
+            </select>
+
+            <label for="content">Enter URL or Email Text</label>
+            <textarea id="content" name="content" placeholder="Paste a suspicious URL or email message here..."></textarea>
+
+            <div class="inline-actions">
+                <button class="button button-primary" type="submit">Analyze Now</button>
+                <button class="button button-secondary" type="button" onclick="fillSafeSample()">Load Safe Sample</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="stack-col">
+        <div class="panel glass-panel">
+            <div class="panel-head compact-gap">
+                <div>
+                    <p class="eyebrow">Sample Inputs</p>
+                    <h2>Demo-Ready Test Cases</h2>
+                </div>
+            </div>
+            <div class="sample-list">
+                <div class="sample-item">
+                    <span class="sample-label danger">Phishing URL</span>
+                    <p>http://secure-login-paypal-update.verify-user-account.ru</p>
+                </div>
+                <div class="sample-item">
+                    <span class="sample-label warning">Suspicious Email</span>
+                    <p>Hello user, we detected unusual activity. Review your account here: http://account-check-security.info</p>
+                </div>
+                <div class="sample-item">
+                    <span class="sample-label safe">Safe URL</span>
+                    <p>https://github.com</p>
+                </div>
+                <div class="sample-item">
+                    <span class="sample-label safe">Safe Email</span>
+                    <p>Please join the project review meeting at 3 PM tomorrow.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-card-grid">
+            <div class="stat-card premium-stat">
+                <span>Total Scans</span>
+                <strong>{{ counts.Total }}</strong>
+            </div>
+            <div class="stat-card premium-stat danger-border">
+                <span>Phishing</span>
+                <strong>{{ counts.Phishing }}</strong>
+            </div>
+            <div class="stat-card premium-stat warn-border">
+                <span>Suspicious</span>
+                <strong>{{ counts.Suspicious }}</strong>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="panel glass-panel recent-preview">
+    <div class="panel-head">
+        <div>
+            <p class="eyebrow">Latest Activity</p>
+            <h2>Recent Scan Preview</h2>
+        </div>
+        <a class="link-text" href="{{ url_for('history') }}">Open full history</a>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Label</th>
+                    <th>Score</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for scan in recent_scans %}
+                <tr>
+                    <td>{{ scan.input_type|upper }}</td>
+                    <td><span class="table-label table-{{ scan.label|lower }}">{{ scan.label }}</span></td>
+                    <td>{{ scan.score }}</td>
+                    <td>{{ scan.created_at }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="muted">No scans yet. Run a few examples from the panel above.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
