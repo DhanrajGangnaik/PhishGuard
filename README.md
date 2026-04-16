@@ -32,15 +32,9 @@ The system runs entirely on a **local machine**, ensuring privacy while providin
 
 ## Architecture
 
-User Input (URL / Email)
-↓
-Feature Extraction (Regex + Rules)
-↓
-Risk Scoring Engine
-↓
-Classification (Safe / Suspicious / Phishing)
-↓
-Results + Explanation + Dashboard
+<p align="center">
+  <img src="diagrams/phishguard_architecture.png" alt="PhishGuard Architecture" width="900"/>
+</p>
 
 ---
 
